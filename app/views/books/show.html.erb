@@ -1,0 +1,70 @@
+<p id="notice"><%= notice %></p>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <h2>User info</h2>
+        <div>
+          <%= attachment_image_tag @user, :profile_image, :fill, 100, 100, format: 'jpeg' %>
+          <p>name：<%= @user.name %></p>
+          <p>introduction：<%= @user.introduction %></p>
+          <button type="button" class="btn btn-outline-secondary btn-block">
+              <%= link_to edit_user_path(@user) do %>
+              <i class = "fas fa-user-cog"></i>
+              <%  end %>
+          </button>
+        </div>
+    </div>
+    <div class="col-md-8 offset-md-1">
+      <h2>Book detail</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+         <!--<th>Title</th>-->
+         <!--<th>Body</th>-->
+         <!--<th colspan="3"></th>-->
+        </tr>
+      </thead>
+    <tbody>
+        <tr>
+          <td>
+            <%= attachment_image_tag @user, :profile_image, :fill, 40, 40, format: 'jpeg', fallback: "no_image.jpg" %>
+            <%= link_to @user.name, user_path(@user.id) %>
+          </td>
+
+
+
+          <td><%= @book.title %></td>
+          <td><%= @book.body %></td>
+          <% if @book.user_id == current_user.id %> 
+          <td><%= link_to 'Edit', edit_book_path(@book),class: 'btn btn-default' %></td>
+          <td><%= link_to 'Destroy', book_path, class: 'btn btn-default' ,method: :delete, data: { confirm: '本当に消しますか?' } %></td>
+          <% end %>
+
+        </tr>
+
+    </tbody>
+  </table>
+  </div>
+ </div>
+</div>
+
+<br>
+
+
+
+<% if @new_book.errors.any? %>
+  <%= @new_book.errors.count %>件のerrorが発生しました
+  <% @new_book.errors.full_messages.each do |message| %>
+    <%= message %>
+  <% end %>
+<% end %>
+
+<h1>New book</h1>
+<%= form_with model: @new_book, local:true do |f| %>
+  <h4>Title</h4>
+  <%= f.text_field :title %>
+  <h4>Opinion</h4>
+  <%= f.text_area :body %>
+  <%= f.submit 'Create Book' %>
+<% end %>
